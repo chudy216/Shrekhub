@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<head>
+	<title>ShrekGamehub</title>
+	<meta charset="utf-8">
+	<html lang="pl">
+	<link rel="icon" href="../imgsite/favicon.png" type="image/x-icon"/>
+	<link rel="shortcut icon" href="imgsite/favicon.png" type="image/x-icon"/>
+	<link rel="stylesheet" href="stylegh.css">
+	<style>
+		.gamefield{width:12vw;height:12vw;
+			font-size:3vw;border:0.1vw solid black;
+			background-color:white;}
+		.gamefield:hover{background-color:silver;
+			cursor:pointer;}
+		.gamefield:active{background-color:#060030;color:white;}
+		button{height:6vh;font-size:2vh;padding:1vh;
+						background-color:white;border:none;}
+		button:hover{background-color:silver;cursor:pointer;}
+		#myCanvas{box-shadow: 0px 0px 20px 2px #000000;background-image:url("imgsite/hotshrek.png");}
+	</style>
+</head>
+
+<body bgcolor="#060030">
+	<div class="header">
+		<a href="gamehub.html"><img class="logo" src="imgsite/logogamehub.png"></a>
+	</div>
+	
+	
+	
+	<div class="content">
+	
+		<div class="incontent">
+			<div class="mainsite">
+			
+			<h1 style="font-size:3vw">Kule Shreka</h1><br>
+			
+			<div><canvas id="myCanvas" width="1050" height="640"></canvas></div>
+			
+			<br><button id="gay" onClick="window.location.reload();">Zacznij od nowa</button>
+						
+			</div>
+		</div>
+	</div>
+	<div class="footer"><b>
+		<p>ShrekGamehub, shrekowe gry o Shreku.<br><p>Dawid, Kamil 3P.</p></p>
+	</b></div>
+</body>
+<script>
+	var seconds = 0;
+	var el = document.getElementById('seconds-counter');
+
+	function incrementSeconds() {
+		seconds += 1;
+		el.innerText = "You have been here for " + seconds + " seconds.";
+	}
+
+	var cancel = setInterval(incrementSeconds, 1000);
+</script>
+<script>
+
+	let losowy = Math.random(1,2)*9;
+	losowy = Math.round(losowy);
+	
+	let losowy2
+	
+	let los = Math.random(0,1)*5;
+	los = Math.round(los);
+	if(los==0){los=6;}
+	
+	if(losowy==0){
+	losowy="green";
+	losowy2="red";
+	}
+	if(losowy==1){
+	losowy="red";
+	losowy2="gold";
+	}
+	if(losowy==2){
+	losowy="blue";
+	losowy2="green";
+	}
+	if(losowy==3){
+	losowy="yellow";
+	losowy2="orange";
+	}
+	if(losowy==4){
+	losowy="pink";
+	losowy2="violet";
+	}
+	if(losowy==5){
+	losowy="orange";
+	losowy2="cyan";
+	}
+	if(losowy==6){
+	losowy="MediumSeaGreen";
+	losowy2="yellow";
+	}
+	if(losowy==7){
+	losowy="violet";
+	losowy2="MediumSeaGreen";
+	}
+	if(losowy==8){
+	losowy="gold";
+	losowy2="blue";
+	}
+	
+	
+	
+	var canvas = document.getElementById("myCanvas");
+	var ctx = canvas.getContext("2d");
+	var ballRadius = 10;
+	var x = canvas.width/2;
+	var y = canvas.height-30;
+	var dx = 2;
+	var dy = -2;
+	var paddleHeight = 10;
+	var paddleWidth = 75;
+	var paddleX = (canvas.width-paddleWidth)/2;
+	var rightPressed = false;
+	var leftPressed = false;
+	var brickRowCount = 20;
+	var brickColumnCount = los;
+	var brickWidth = 40;
+	var brickHeight = 40;
+	var brickPadding = 10;
+	var brickOffsetTop = 30;
+	var brickOffsetLeft = 30;
+	var score = 0;
+	var lives = 1;
+
+	var bricks = [];
+	for(var c=0; c<brickColumnCount; c++) {
+	  bricks[c] = [];
+	  for(var r=0; r<brickRowCount; r++) {
+		bricks[c][r] = { x: 0, y: 0, status: 1 };
+	  }
+	}
+
+	document.addEventListener("keydown", keyDownHandler, false);
+	document.addEventListener("keyup", keyUpHandler, false);
+	document.addEventListener("mousemove", mouseMoveHandler, false);
+
+	function keyDownHandler(e) {
+		if(e.key == "Right" || e.key == "ArrowRight") {
+			rightPressed = true;
+		}
+		else if(e.key == "Left" || e.key == "ArrowLeft") {
+			leftPressed = true;
+		}
+	}
+
+	function keyUpHandler(e) {
+		if(e.key == "Right" || e.key == "ArrowRight") {
+			rightPressed = false;
+		}
+		else if(e.key == "Left" || e.key == "ArrowLeft") {
+			leftPressed = false;
+		}
+	}
+
+	function mouseMoveHandler(e) {
+	  var relativeX = e.clientX - canvas.offsetLeft;
+	  if(relativeX > 0 && relativeX < canvas.width) {
+		paddleX = relativeX - paddleWidth/2;
+	  }
+	}
+	function collisionDetection() {
+	  for(var c=0; c<brickColumnCount; c++) {
+		for(var r=0; r<brickRowCount; r++) {
+		  var b = bricks[c][r];
+		  if(b.status == 1) {
+			if(x > b.x && x < b.x+brickWidth && y > b.y && y < b.y+brickHeight) {
+			  dy = -dy;
+			  b.status = 0;
+			  score++;
+			  if(score == brickRowCount*brickColumnCount) {
+			document.getElementById("myCanvas").innerHTML="Wygrałeś";
+			window.location.reload();
+			  }
+			}
+		  }
+		}
+	  }
+	}
+
+	function drawBall() {
+	  ctx.beginPath();
+	  ctx.arc(x, y, ballRadius, 0, Math.PI*2);
+	  ctx.fillStyle = "losowy";
+	  ctx.fill();
+	  ctx.closePath();
+	}
+	function drawPaddle() {
+	  ctx.beginPath();
+	  ctx.rect(paddleX, canvas.height-paddleHeight, paddleWidth, paddleHeight);
+	  ctx.fillStyle = "losowy2";
+	  ctx.fill();
+	  ctx.closePath();
+	}
+	function drawBricks() {
+	  for(var c=0; c<brickColumnCount; c++) {
+		for(var r=0; r<brickRowCount; r++) {
+		  if(bricks[c][r].status == 1) {
+			var brickX = (r*(brickWidth+brickPadding))+brickOffsetLeft;
+			var brickY = (c*(brickHeight+brickPadding))+brickOffsetTop;
+			bricks[c][r].x = brickX;
+			bricks[c][r].y = brickY;
+			ctx.beginPath();
+			ctx.rect(brickX, brickY, brickWidth, brickHeight);
+			
+			if(score%2==1){ctx.fillStyle = losowy;}
+			else{ctx.fillStyle = losowy2;}
+			
+			ctx.fill();
+			ctx.closePath();
+		  }
+		}
+	  }
+	}
+	function drawScore() {
+	  ctx.font = "22px Arial";
+	  ctx.fillStyle = "#ccc";
+	  ctx.fillText("Wynik: "+score, 8, 20);
+	}
+	function drawLives() {
+	  ctx.font = "12px Arial";
+	}
+
+	function draw() {
+	  ctx.clearRect(0, 0, canvas.width, canvas.height);
+	  drawBricks();
+	  drawBall();
+	  drawPaddle();
+	  drawScore();
+	  drawLives();
+	  collisionDetection();
+
+	  if(x + dx > canvas.width-ballRadius || x + dx < ballRadius) {
+		dx = -dx;
+	  }
+	  if(y + dy < ballRadius) {
+		dy = -dy;
+	  }
+	  else if(y + dy > canvas.height-ballRadius) {
+		if(x > paddleX && x < paddleX + paddleWidth) {
+		  dy = -dy;
+		}
+		else {
+		  lives--;
+		  if(!lives) {
+			document.getElementById("myCanvas").innerHTML="Przegrałeś";
+			window.location.reload();
+		  }
+		  else {
+			x = canvas.width/2;
+			y = canvas.height-30;
+			dx = 3;
+			dy = -3;
+			paddleX = (canvas.width-paddleWidth)/2;
+		  }
+		}
+	  }
+
+	  if(rightPressed && paddleX < canvas.width-paddleWidth) {
+		paddleX += 7;
+	  }
+	  else if(leftPressed && paddleX > 0) {
+		paddleX -= 7;
+	  }
+
+	  x += dx;
+	  y += dy;
+	  requestAnimationFrame(draw);
+	}
+
+	draw();
+</script>
+
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<head>
+	<title>ShrekGamehub</title>
+	<meta charset="utf-8">
+	<html lang="pl">
+	<link rel="icon" href="../imgsite/favicon.png" type="image/x-icon"/>
+	<link rel="shortcut icon" href="imgsite/favicon.png" type="image/x-icon"/>
+	<link rel="stylesheet" href="stylegh.css">
+	<style>
+		.gamefield{width:12vw;height:12vw;
+			font-size:3vw;border:0.1vw solid black;
+			background-color:white;}
+		.gamefield:hover{background-color:silver;
+			cursor:pointer;}
+		.gamefield:active{background-color:#060030;color:white;}
+		button{height:6vh;font-size:2vh;padding:1vh;
+						background-color:white;border:none;}
+		button:hover{background-color:silver;cursor:pointer;}
+	</style>
+</head>
+
+<body bgcolor="#060030">
+	<div class="header">
+		<a href="gamehub.html"><img class="logo" src="imgsite/logogamehub.png"></a>
+	</div>
+	
+	
+	
+	<div class="content">
+	
+		<div class="incontent">
+			<div class="mainsite">
+			
+			<h1 style="font-size:3vw">Shrekowa Elipsa i Litera X</h1><br>
+			
+				<div id="plansza">
+					<button id="a" class="gamefield" type=button onclick="gra('a')"> ⠀ </button><button id="b" class="gamefield"  type=button onclick="gra('b')"> ⠀ </button><button id="c" class="gamefield"  type=button onclick="gra('c')"> ⠀ </button><br>
+					<button id="d" class="gamefield"  type=button onclick="gra('d')"> ⠀ </button><button id="e" class="gamefield"  type=button onclick="gra('e')"> ⠀ </button><button id="f" class="gamefield"  type=button onclick="gra('f')"> ⠀ </button><br>
+					<button id="g" class="gamefield"  type=button onclick="gra('g')"> ⠀ </button><button id="h" class="gamefield"  type=button onclick="gra('h')"> ⠀ </button><button id="i" class="gamefield"  type=button onclick="gra('i')"> ⠀ </button><br>
+				</div>
+				<h1 id="figura"></h1>
+				<br><button id="gay" onClick="window.location.reload();">Zacznij od nowa</button>
+			</div>
+		</div>
+		
+	<br>
+	</div>
+	
+	<div class="footer"><b>
+		<p>ShrekGamehub, shrekowe gry o Shreku.<br><p>Dawid, Kamil 3P.</p></p>
+	</b></div>
+</body>
+
+<script>
+	let losowy = Math.random(1,2);
+	losowy = Math.round(losowy);
+	if(losowy==0){
+		losowy="O";
+	}else{
+		losowy="X";
+	}
+	document.getElementById("figura").innerHTML="<br>FIGURA: "+losowy;
+	let a;let b;let c;
+	let d;let e;let f;
+	let g;let h;let i;	
+	let z=0;
+	function gra(field){
+		z++
+		let ajdi=document.getElementById(field).innerHTML;
+		if(ajdi=="X"){
+		return;}else if(ajdi=="O"){return;}
+		
+		document.getElementById(field).innerHTML=losowy;
+		if(losowy=="X"){
+			losowy="O";
+			document.getElementById("figura").innerHTML="<br>FIGURA: "+losowy;
+		}else{losowy="X";
+			document.getElementById("figura").innerHTML="<br>FIGURA: "+losowy;}
+			
+		a = document.getElementById("a").innerHTML;
+		b = document.getElementById("b").innerHTML;
+		c = document.getElementById("c").innerHTML;
+		
+		d = document.getElementById("d").innerHTML;
+		e = document.getElementById("e").innerHTML;
+		f = document.getElementById("f").innerHTML;
+		
+		g = document.getElementById("g").innerHTML;
+		h = document.getElementById("h").innerHTML;
+		i = document.getElementById("i").innerHTML;
+		
+		if(	a+b+c=="XXX"||a+b+c=="OOO"
+			||
+			d+e+f=="XXX"||d+e+f=="OOO"
+			||
+			g+h+i=="XXX"||g+h+i=="OOO"
+			||
+			a+d+g=="XXX"||a+d+g=="OOO"
+			||
+			b+e+h=="XXX"||b+e+h=="OOO"
+			||
+			c+f+i=="XXX"||c+f+i=="OOO"
+			||
+			a+e+i=="XXX"||a+e+i=="OOO"
+			||
+			c+e+g=="XXX"||c+e+g=="OOO"){
+			if(losowy=="X"){
+			losowy="O";
+			}else{losowy="X"}
+			document.getElementById("figura").innerHTML="Wygrywa: "+losowy;
+			document.getElementById("plansza").innerHTML="";
+			z=1;}
+			
+		if(z==9){document.getElementById("figura").innerHTML="Remis";
+			document.getElementById("plansza").innerHTML="";}
+		
+	}
+</script>
+
+</html>

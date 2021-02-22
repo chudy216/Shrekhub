@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<head>
+	<title>ShrekGamehub</title>
+	<meta charset="utf-8">
+	<html lang="pl">
+	<link rel="icon" href="../imgsite/favicon.png" type="image/x-icon"/>
+	<link rel="shortcut icon" href="imgsite/favicon.png" type="image/x-icon"/>
+	<link rel="stylesheet" href="stylegh.css">
+					<style>
+						body{
+						color:white;}
+						
+						button{height:6vh;font-size:2vh;padding:1vh;
+						background-color:white;border:none;}
+						button:hover{background-color:silver;cursor:pointer;}
+						
+						.all{vertical-align: middle;}
+						
+						.all input{padding:5px;}
+						
+						.pole{width:6vh;height:6vh;
+						text-align:center; font-size:3vh;}
+						
+						#plansza input{text-align:center;}
+						#plansza{font-size:2vh;}
+						
+						#n{width:6vh;height:6vh;
+						text-align:center; font-size:3vh;}
+						
+						.hide{transform: scaleY(0);
+						height:0px;}
+					</style>
+</head>
+
+<body bgcolor="#060030">
+	<div class="header">
+		<a href="gamehub.html"><img class="logo" src="imgsite/logogamehub.png"></a>
+	</div>
+	
+	
+	
+	<div class="content">
+	
+		<div class="incontent">
+			<div class="mainsite">
+							<div class="all">
+							
+							<h1 style="font-size:3vw">Shrekowy kwadrat</h1>
+							<h1 id="e">Podaj rozmiar shrekowego kwadratu:</h1><br>
+							<p id="mainsize"><input maxlength='2' type="text" id="n"></p><br></p>
+							<p id="pszycizg"><button type=button onclick="gra()">Generuj planszę</button><br></p>
+
+							<script>
+							//duplikat
+							function duplikat(lista) {
+							return (new Set(lista)).size!==lista.length;}
+							
+							//generator
+							function gra(){
+								
+								let n = document.getElementById("n").value;
+								
+						//limit rozmiaru planszy
+								if (n>10){
+								document.getElementById("plansza").innerHTML="Limit rozmiaru: 10 ";
+								return;}
+								if (n<3){
+								document.getElementById("plansza").innerHTML="Minimalny rozmiar: 3 ";
+								return;}
+								
+								document.getElementById("plansza").innerHTML="";
+								
+								document.getElementById("pszycizg").innerHTML="";
+								
+								document.getElementById("mainsize").classList.add("hide")
+								
+								let losowa = 0;
+								let losowa2 = 0;
+								while(losowa==0 || losowa2==0){
+								losowa = parseInt(Math.random()*n*n);
+								losowa2 = parseInt(Math.random()*n*n);
+								}
+								
+								
+								var el = document.getElementById("e").innerHTML="";
+								let z = 0;
+									while (z<n*n){
+										if (losowa2==z){
+										document.getElementById("plansza").innerHTML+="<input class='pole' maxlength='3' type='text' value='"+losowa2+"' id='a"+z+"'>";}
+										else if (losowa==z){
+										document.getElementById("plansza").innerHTML+="<input class='pole' maxlength='3' type='text' value='"+losowa+"' id='a"+z+"'>";
+										}else{
+										document.getElementById("plansza").innerHTML+="<input class='pole' maxlength='3' type='text' id='a"+z+"'>";}
+									
+									z++;
+										if (z%n==0){
+										document.getElementById("plansza").innerHTML+="<br>";
+										}
+									}
+								let w=n*n+1;
+								w=w*n/2;
+								document.getElementById("e").innerHTML="Docelowa wartość w linii: "+w+"<br>";
+								document.getElementById("wp").innerHTML="<button type=button id='eee' onclick='sprawdzacz()'>Sprawdź</button>";
+								}
+								
+							//sprawdzacz
+							function sprawdzacz(){	
+							document.getElementById("test2").innerHTML="";
+							document.getElementById("test3").innerHTML="";
+							
+							let aw=0;
+							let zw=1;
+							let ew=1;
+							let nw=1;
+							let fin=false;
+							let zw2=1;
+							let ew2=1;
+							let nw2=1;
+							
+							let n = document.getElementById("n").value;
+							let il=0;
+							let w=n*n+1;
+								w=w*n/2;
+							var b=[""];
+								
+								while (aw<n*n){
+								b.push(document.getElementById("a"+aw).value);
+								aw++;}
+								
+								while (zw<=n){
+									nw=1;
+									let gay=0;
+									while (nw<=n){
+										gay += parseInt(b[ew]);
+										ew++
+										nw++}
+									document.getElementById("test2").innerHTML+="● "+zw+" wiersz: "+gay;
+										
+										if(gay==w){
+										document.getElementById("test2").innerHTML+="  ✓";
+										il++;}
+										else{il--;}
+										
+									
+									document.getElementById("test2").innerHTML+="<br>";
+								zw++;}
+								
+								while (zw2<=n){
+									nw2=1;
+									let gay2=0;
+									while (nw2<=n){
+										gay2+=parseInt(b[ew2]);
+										ew2=ew2+parseInt(n);
+										nw2++;
+										}
+									document.getElementById("test3").innerHTML+="● "+zw2+" kolumna: "+gay2;
+									
+										if(gay2==w){
+										document.getElementById("test3").innerHTML+=" ✓";
+										il++;}
+										else{il--;}
+										
+								
+									document.getElementById("test3").innerHTML+="<br>";
+									zw2++;
+									ew2=ew2-parseInt(n)*parseInt(n)+1;}
+									
+									let zr=duplikat(b);
+									if (zr==true){
+									document.getElementById("test35").innerHTML="Pola się powtarzają."
+									fin=false;
+									;
+									}else{
+									document.getElementById("test35").innerHTML=""
+									fin=true;
+									}
+									
+									if (il==parseInt(n)*2 && fin==true){
+									document.getElementById("test4").innerHTML="Wygrana."
+									document.getElementById("eee").classList.add("hide")};
+							}
+							
+							
+							</script>
+							<br>
+								<div id="plansza">
+									
+								</div>
+								
+							<br>
+							<div style="font-size:2.5vh;">
+							<p id="wp"></p>
+							<p id="test"></p>
+							<table><tr>
+							<td><p id="test2"></p></td>
+							<td><p id="test3"></p></td></tr>
+							</table>
+							
+							<p id="test35"></p>
+							<p id="test4"></p>
+							</div>
+						</div>
+						<br><button id="gay" onClick="window.location.reload();">Zacznij od nowa</button>
+
+			</div>
+		</div>
+		
+	<br>
+	</div>
+	
+	<div class="footer"><b>
+		<p>ShrekGamehub, shrekowe gry o Shreku.<br><p>Dawid, Kamil 3P.</p></p>
+	</b></div>
+</body>
+
+<script>
+</script>
+
+</html>
